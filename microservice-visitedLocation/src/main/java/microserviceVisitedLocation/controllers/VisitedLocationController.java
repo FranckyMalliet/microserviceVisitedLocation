@@ -13,6 +13,7 @@ import java.util.UUID;
 @RestController
 public class VisitedLocationController {
 
+    private final static Logger logger = LoggerFactory.getLogger(VisitedLocationController.class);
     private VisitedLocationService visitedLocationService;
 
     public VisitedLocationController(VisitedLocationService visitedLocationService){
@@ -21,6 +22,7 @@ public class VisitedLocationController {
 
     @GetMapping(value = "/createVisitedLocation")
     public VisitedLocation createVisitedLocation(@RequestParam("userId") UUID userId){
+        logger.debug("Creating a VisitedLocation");
         return visitedLocationService.createVisitedLocation(userId);
     }
 }

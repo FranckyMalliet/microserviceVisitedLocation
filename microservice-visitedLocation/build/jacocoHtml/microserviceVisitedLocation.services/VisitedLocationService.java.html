@@ -7,9 +7,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.UUID;
-import java.util.concurrent.ThreadLocalRandom;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.util.*;
 
 @Service
 <span class="fc" id="L15">public class VisitedLocationService {</span>
@@ -29,13 +29,30 @@ import java.util.concurrent.ThreadLocalRandom;
 <span class="fc" id="L29">        rateLimiter.acquire();</span>
 <span class="fc" id="L30">        this.sleepUtilities.sleep();</span>
 
-<span class="fc" id="L32">        double longitude = ThreadLocalRandom.current().nextDouble(-180.0D, 180.0D);</span>
-<span class="fc" id="L33">        double latitude = ThreadLocalRandom.current().nextDouble(-85.05112878D, 85.05112878D);</span>
+<span class="fc" id="L32">        VisitedLocation visitedLocation = new VisitedLocation(userId, generateRandomLatitude(), generateRandomLongitude(), getRandomTime());</span>
 
-<span class="fc" id="L35">        VisitedLocation visitedLocation = new VisitedLocation(userId, latitude, longitude, new Date());</span>
-
-<span class="fc" id="L37">        logger.debug(&quot;Creating a new VisitedLocation&quot;);</span>
+<span class="fc" id="L34">        logger.debug(&quot;Creating a new VisitedLocation, userId : &quot; + visitedLocation.getUserId()</span>
+<span class="fc" id="L35">                + &quot;, latitude : &quot; + visitedLocation.getLatitude()</span>
+<span class="fc" id="L36">                + &quot;, longitude : &quot; + visitedLocation.getLongitude()</span>
+<span class="fc" id="L37">                + &quot;, time : &quot; + visitedLocation.getTimeVisited());</span>
 <span class="fc" id="L38">        return visitedLocation;</span>
+    }
+
+    private double generateRandomLongitude() {
+<span class="fc" id="L42">        double leftLimit = -180;</span>
+<span class="fc" id="L43">        double rightLimit = 180;</span>
+<span class="fc" id="L44">        return Math.random() * (rightLimit - leftLimit) + leftLimit;</span>
+    }
+
+    private double generateRandomLatitude() {
+<span class="fc" id="L48">        double leftLimit = -85.05112878;</span>
+<span class="fc" id="L49">        double rightLimit = 85.05112878;</span>
+<span class="fc" id="L50">        return Math.random() * (rightLimit - leftLimit) + leftLimit;</span>
+    }
+
+    private Date getRandomTime() {
+<span class="fc" id="L54">        LocalDateTime localDateTime = LocalDateTime.now().minusDays(new Random().nextInt(30));</span>
+<span class="fc" id="L55">        return Date.from(localDateTime.toInstant(ZoneOffset.UTC));</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

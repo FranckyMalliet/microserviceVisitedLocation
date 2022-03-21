@@ -7,9 +7,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.UUID;
-import java.util.concurrent.ThreadLocalRandom;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.util.*;
 
 @Service
 public class VisitedLocationService {
@@ -29,12 +29,29 @@ public class VisitedLocationService {
         rateLimiter.acquire();
         this.sleepUtilities.sleep();
 
-        double longitude = ThreadLocalRandom.current().nextDouble(-180.0D, 180.0D);
-        double latitude = ThreadLocalRandom.current().nextDouble(-85.05112878D, 85.05112878D);
+        VisitedLocation visitedLocation = new VisitedLocation(userId, generateRandomLatitude(), generateRandomLongitude(), getRandomTime());
 
-        VisitedLocation visitedLocation = new VisitedLocation(userId, latitude, longitude, new Date());
-
-        logger.debug("Creating a new VisitedLocation");
+        logger.debug("Creating a new VisitedLocation, userId : " + visitedLocation.getUserId()
+                + ", latitude : " + visitedLocation.getLatitude()
+                + ", longitude : " + visitedLocation.getLongitude()
+                + ", time : " + visitedLocation.getTimeVisited());
         return visitedLocation;
+    }
+
+    private double generateRandomLongitude() {
+        double leftLimit = -180;
+        double rightLimit = 180;
+        return Math.random() * (rightLimit - leftLimit) + leftLimit;
+    }
+
+    private double generateRandomLatitude() {
+        double leftLimit = -85.05112878;
+        double rightLimit = 85.05112878;
+        return Math.random() * (rightLimit - leftLimit) + leftLimit;
+    }
+
+    private Date getRandomTime() {
+        LocalDateTime localDateTime = LocalDateTime.now().minusDays(new Random().nextInt(30));
+        return Date.from(localDateTime.toInstant(ZoneOffset.UTC));
     }
 }

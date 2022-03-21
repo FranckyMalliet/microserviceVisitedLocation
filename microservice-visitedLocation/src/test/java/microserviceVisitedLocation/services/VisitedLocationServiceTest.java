@@ -24,8 +24,6 @@ public class VisitedLocationServiceTest {
         
         //
         Assertions.assertNotNull(visitedLocation);
-        Assertions.assertNotNull(visitedLocation.getLatitude());
-        Assertions.assertNotNull(visitedLocation.getLongitude());
         Assertions.assertEquals(userID, visitedLocation.getUserId());
     }
 }
