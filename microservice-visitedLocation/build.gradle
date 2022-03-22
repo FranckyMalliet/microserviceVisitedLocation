@@ -19,6 +19,15 @@ repositories {
     mavenLocal()
 }
 
+task fatJar(type: Jar) {
+    manifest {
+        attributes 'Main-Class': 'microserviceVisitedLocation.MicroServiceVisitedLocationApplication'
+    }
+    from {
+        configurations.compile.collect { it.isDirectory() ? it : zipTree(it)} }
+    with jar
+}
+
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-actuator")
