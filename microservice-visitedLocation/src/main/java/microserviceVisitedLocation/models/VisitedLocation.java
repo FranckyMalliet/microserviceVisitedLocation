@@ -11,8 +11,6 @@ public class VisitedLocation {
     private double longitude;
 
     public VisitedLocation(UUID userId, double latitude, double longitude, Date timeVisited) {
-        Objects.requireNonNull(longitude);
-        Objects.requireNonNull(latitude);
         Objects.requireNonNull(timeVisited);
 
         this.userId = userId;

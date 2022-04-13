@@ -1,8 +1,6 @@
 package microserviceVisitedLocation.services;
 
-import com.google.common.util.concurrent.RateLimiter;
 import microserviceVisitedLocation.models.VisitedLocation;
-import microserviceVisitedLocation.utilities.SleepUtilities;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -15,8 +13,6 @@ import java.util.*;
 public class VisitedLocationService {
 
     private final static Logger logger = LoggerFactory.getLogger(VisitedLocationService.class);
-    private static final RateLimiter rateLimiter = RateLimiter.create(10000);
-    private final SleepUtilities sleepUtilities = new SleepUtilities();
 
     /**
      * Using a UUID userID, this method create a visitedLocation object
@@ -26,9 +22,6 @@ public class VisitedLocationService {
      */
 
     public VisitedLocation createVisitedLocation(UUID userId) {
-        rateLimiter.acquire();
-        this.sleepUtilities.sleep();
-
         VisitedLocation visitedLocation = new VisitedLocation(userId, generateRandomLatitude(), generateRandomLongitude(), getRandomTime());
 
         logger.debug("Creating a new VisitedLocation, userId : " + visitedLocation.getUserId()

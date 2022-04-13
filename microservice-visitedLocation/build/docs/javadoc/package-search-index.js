@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"microserviceVisitedLocation"},{"l":"microserviceVisitedLocation.controllers"},{"l":"microserviceVisitedLocation.models"},{"l":"microserviceVisitedLocation.services"}];updateSearchResults();
